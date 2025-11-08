@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql2": "^3.15.3",
+    "npm": "^11.6.2"
+  },
+  "name": "spaceship-central-api",
+  "version": "1.0.0",
+  "description": "an api for spaceship central",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexander William Hansen",
+  "license": "ISC"
+}
