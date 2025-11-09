@@ -16,7 +16,7 @@ CREATE TABLE Users (
 );
 
 
-Create Table SpaceShip (
+Create Table SpaceShips (
     id INT Not Null AUTO_INCREMENT Primary Key,
     Name VARCHAR(255) Not Null UNIQUE,
     Universe VARCHAR(255) Not Null

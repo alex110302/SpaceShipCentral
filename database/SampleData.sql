@@ -25,3 +25,22 @@ VALUES (
         'jack@jack.com',
         'Password'
     );
+
+Truncate Table SpaceShips;
+
+Insert Into SpaceShips
+Values (
+        1,
+        'millennium falcon',
+        'Star Wars'
+    ),
+    (
+        2,
+        'Enterprise',
+        'Star Trek'
+    ),
+    (
+        3,
+        'Ornithopter',
+        'Dun'
+    );

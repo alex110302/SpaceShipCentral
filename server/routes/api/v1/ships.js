@@ -18,13 +18,14 @@ router.get('/:id', async (req, res) =>{
 
 router.put('/create', async (req, res) => {
     const { Name, Universe } = req.body
-
+    
     const query = `Insert Into 
                     SpaceShip (Name, Universe)
                     Values ( ?, ?)`
-
+    //*this is parameterized data in mysql2
     const addedShip = await sqlDb.promise().query(query, [Name, Universe])
-    //don't yet know how to get the data to come down into the API from the front end... need to figure this out
+    
+    //TODO: don't yet know how to get the data to come down into the API from the front end... need to figure this out
     res.send(addedShip)
 })
 
