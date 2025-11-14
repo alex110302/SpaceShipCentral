@@ -1,14 +1,9 @@
 const router = require('express').Router()
 const sqlDb = require('../../../db_connection')
+const obfuscateSqlParams = require('../../../utils/obfuscateSqlParams')
 
 //*add the name of table this part of the api will be working on
 const tableName = 'users'
-
-const obfuscateSqlParams = (reqBody, doAssignment = false) => { 
-        const reqKeys = Object.keys(reqBody)
-        console.log(reqBody)
-        return reqKeys.map(e => doAssignment ? `${e} = ?` : '?'
-)}   
 
 router.get('/', async (req, res) => {
     res.send('you made it to the end point')
@@ -53,16 +48,19 @@ router.post('/update', async (req, res) => {
         Password
     } = req.body
 
-    //!hacky ahhh fix for the fact that for some reason the reqBody obj comes back with id even tho I dont tell it to...
+    //!hacky ahhh fix for the fact that for some reason the reqBody obj comes back with id even tho I don't tell it to...
+    const { id } = req.body
     delete reqBody.id
 
     const query = `Update ${tableName}
-                    Set (${obfuscateSqlParams(reqBody, true)})
+                    Set ${obfuscateSqlParams(reqBody, true)}
                     Where id = ?`
-    //Object.values(reqBody).push(req.body.id)
-    const { id } = req.body
-    console.log(query)
-    const updatedItem = await sqlDb.promise().query(query, [First_Name, Last_Name, User_Name, Email, Password, id])
+
+    //this allows for copy past so that other routers can use basically the same code
+    const tempArray = Object.values(reqBody)
+    tempArray.push(id)
+
+    const updatedItem = await sqlDb.promise().query(query, tempArray)
 
     res.send(updatedItem)
 })

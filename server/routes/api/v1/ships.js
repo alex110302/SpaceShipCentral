@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const sqlDb = require('../../../db_connection')
+const obfuscateSqlParams = require('../../../utils/obfuscateSqlParams')
 
 //*add the name of table this part of the api will be working on
 const tableName = 'spaceships'
@@ -20,26 +21,40 @@ router.get('/:id', async (req, res) =>{
 })
 
 router.put('/create', async (req, res) => {
-    const { Name, Universe } = req.body
-    
+    const reqBody = { 
+        Name,
+        Universe
+    } = req.body
+
     const query = `Insert Into 
-                    ${tableName} (Name, Universe)
-                    Values ( ?, ?)`
-    //*this is parameterized data in mysql2 aka the ? and then query(query, [var, var]) where ? is var
-    const addedItem = await sqlDb.promise().query(query, [Name, Universe])
+                    ${tableName} (${Object.keys(reqBody)})
+                    Values (${obfuscateSqlParams(reqBody)})`
+
+    const addedItem = await sqlDb.promise().query(query, Object.values(reqBody))
     
     //TODO: don't yet know how to get the data to come down into the API from the front end... need to figure this out
     res.send(addedItem)
 })
 
 router.post('/update', async (req, res) => {
-    const { id, Name, Universe } = req.body
+    const reqBody = {
+        Name,
+        Universe
+    } = req.body
+
+    //!hacky ahhh fix for the fact that for some reason the reqBody obj comes back with id even tho I don't tell it to...
+    const { id } = req.body
+    delete reqBody.id
 
     const query = `Update ${tableName}
-                    Set Name = ?, Universe = ?
+                    Set ${obfuscateSqlParams(reqBody, true)}
                     Where id = ?`
+
+    //this allows for copy past so that other routers can use basically the same code
+    const tempArray = Object.values(reqBody)
+    tempArray.push(id)
     
-    const updatedItem = await sqlDb.promise().query(query, [Name, Universe, id])
+    const updatedItem = await sqlDb.promise().query(query, tempArray)
 
     res.send(updatedItem)
 })
