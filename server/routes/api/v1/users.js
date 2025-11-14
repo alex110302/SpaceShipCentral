@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const sqlDb = require('../../../db_connection')
-const obfuscateSqlParams = require('../../../utils/obfuscateSqlParams')
+const obfuscateSqlParams = require('../../../utils/obfuscate_sql_params')
 
 //*add the name of table this part of the api will be working on
 const tableName = 'users'
