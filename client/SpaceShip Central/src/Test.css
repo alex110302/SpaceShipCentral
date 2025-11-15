@@ -1,0 +1,12 @@
+.test-button-add {
+    display: flex;
+    flex-direction: column;
+    margin-left: 400px;
+    margin-top: 10px;
+    /* hacky ahh fix but I don't know css that well so idc and this is a test page for testing duh */
+}
+
+.center {
+    display: flex;
+    align-items: center;             
+}
